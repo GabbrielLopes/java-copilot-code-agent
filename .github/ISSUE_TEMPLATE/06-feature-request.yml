@@ -1,0 +1,141 @@
+name: 💡 Melhorias e Novas Funcionalidades
+description: Sugerir uma nova funcionalidade ou melhoria para o sistema
+title: "[Feature]: "
+labels: ["enhancement"]
+assignees:
+  - copilot
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 💡 Sugestão de Melhoria
+        
+        Obrigado por sua sugestão! Descreva a funcionalidade ou melhoria que você gostaria de ver no sistema.
+
+  - type: dropdown
+    id: feature-area
+    attributes:
+      label: Área do Sistema
+      description: Qual parte do sistema seria afetada?
+      options:
+        - Gestão de atividades
+        - Gestão de inscrições
+        - Autenticação e professores
+        - Interface web (frontend)
+        - API REST
+        - Relatórios e dados
+        - Segurança
+        - Performance
+        - Outra
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem-description
+    attributes:
+      label: Problema ou Necessidade
+      description: Qual problema esta funcionalidade resolveria? Qual necessidade atenderia?
+      placeholder: "Ex: Atualmente é difícil saber quantos estudantes se inscreveram em cada semana. Precisamos de um relatório semanal."
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: Solução Proposta
+      description: Como você imagina que esta funcionalidade funcionaria?
+      placeholder: "Ex: Adicionar uma página de relatórios que mostre inscrições por semana, com gráficos e opção de exportar para PDF"
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Critérios de Aceitação
+      description: Como saberemos que a funcionalidade está completa e funcional?
+      placeholder: |
+        - [ ] Usuário pode acessar página de relatórios
+        - [ ] Relatório mostra inscrições da última semana
+        - [ ] É possível exportar em PDF
+        - [ ] Dados estão corretos e atualizados
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternativas Consideradas
+      description: Você considerou outras formas de resolver este problema?
+      placeholder: "Ex: Pensamos em enviar relatórios por email, mas preferimos ter acesso sob demanda"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Prioridade
+      description: Quão importante é esta funcionalidade?
+      options:
+        - Alta - Muito importante, precisamos urgentemente
+        - Média - Importante, mas não urgente
+        - Baixa - Seria bom ter, mas não é essencial
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: impact
+    attributes:
+      label: Impacto Esperado
+      description: Selecione todos que se aplicam
+      options:
+        - label: Melhoraria a experiência dos professores
+        - label: Melhoraria a experiência dos estudantes
+        - label: Aumentaria a eficiência operacional
+        - label: Forneceria dados importantes para decisões
+        - label: Resolveria um problema atual
+        - label: Reduziria trabalho manual
+
+  - type: textarea
+    id: technical-suggestions
+    attributes:
+      label: Sugestões Técnicas (Opcional)
+      description: Se você tem ideias técnicas de como implementar, compartilhe aqui
+      placeholder: "Ex: Poderia usar a biblioteca X para gerar os PDFs, ou adicionar um novo endpoint REST /reports/weekly"
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Contexto Adicional
+      description: Screenshots, exemplos de outros sistemas, links, etc.
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        
+        ## 🔧 Informações para o Agente de Codificação
+        
+        **Princípios a seguir:**
+        - Manter a arquitetura limpa (Clean Architecture) existente
+        - Adicionar testes para novas funcionalidades
+        - Seguir os padrões do código existente
+        - Documentar mudanças significativas
+        - Considerar impacto em funcionalidades existentes
+        
+        **Estrutura de camadas:**
+        - Domain: Lógica de negócio pura
+        - Application: Casos de uso e DTOs
+        - Infrastructure: Banco de dados, configurações
+        - Presentation: Controllers REST, mappers
+        
+        **Antes de implementar:**
+        - Verifique se não quebra funcionalidades existentes
+        - Adicione testes apropriados
+        - Atualize documentação se necessário
+        - Considere impacto em performance
+        - Valide segurança e autenticação

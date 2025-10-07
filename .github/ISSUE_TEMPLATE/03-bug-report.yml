@@ -1,0 +1,151 @@
+name: 🐛 Reportar Problema
+description: Reportar um bug ou comportamento inesperado no sistema
+title: "[Bug]: "
+labels: ["bug"]
+assignees:
+  - copilot
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 🐛 Relato de Problema
+        
+        Obrigado por reportar um problema! Quanto mais detalhes você fornecer, mais fácil será para corrigirmos.
+
+  - type: dropdown
+    id: bug-area
+    attributes:
+      label: Área do Sistema
+      description: Onde o problema está ocorrendo?
+      options:
+        - Listagem de atividades
+        - Inscrição de estudantes
+        - Cancelamento de inscrição
+        - Login de professor
+        - Filtros de busca
+        - Exibição de horários
+        - Capacidade de vagas
+        - Interface web (visual)
+        - API REST
+        - Outro
+    validations:
+      required: true
+
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Descrição do Problema
+      description: Descreva claramente o que está acontecendo de errado
+      placeholder: "Ex: Quando tento inscrever um aluno no Clube de Xadrez, recebo uma mensagem de erro mesmo havendo vagas disponíveis"
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Comportamento Esperado
+      description: O que você esperava que acontecesse?
+      placeholder: "Ex: O aluno deveria ser inscrito com sucesso e aparecer na lista de participantes"
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Passos para Reproduzir
+      description: Como podemos reproduzir este problema?
+      placeholder: |
+        1. Fazer login como 'teacher.rodriguez'
+        2. Ir para a atividade 'Clube de Xadrez'
+        3. Tentar inscrever o email 'aluno@mergington.edu'
+        4. Ver erro aparecer
+    validations:
+      required: true
+
+  - type: textarea
+    id: error-message
+    attributes:
+      label: Mensagem de Erro
+      description: Se houver uma mensagem de erro, cole aqui
+      placeholder: "Ex: 'Credenciais de professor inválidas'"
+      render: text
+    validations:
+      required: false
+
+  - type: input
+    id: activity-name
+    attributes:
+      label: Nome da Atividade (se aplicável)
+      description: Se o problema está relacionado a uma atividade específica
+      placeholder: "Ex: Clube de Xadrez"
+    validations:
+      required: false
+
+  - type: input
+    id: teacher-username
+    attributes:
+      label: Nome de Usuário do Professor (se aplicável)
+      description: Se o problema está relacionado a um professor específico
+      placeholder: "Ex: teacher.rodriguez"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: frequency
+    attributes:
+      label: Frequência do Problema
+      description: Com que frequência isso acontece?
+      options:
+        - Sempre acontece
+        - Acontece frequentemente
+        - Acontece às vezes
+        - Aconteceu apenas uma vez
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Gravidade
+      description: Quão sério é este problema?
+      options:
+        - Crítico - Sistema não funciona
+        - Alto - Funcionalidade importante quebrada
+        - Médio - Funcionalidade menor afetada
+        - Baixo - Inconveniente pequeno
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Informações Adicionais
+      description: Screenshots, logs, ou qualquer outra informação relevante
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        
+        ## 📝 Critérios de Aceitação
+        
+        O bug será considerado corrigido quando:
+        - ✅ O problema descrito não ocorrer mais
+        - ✅ Os passos para reproduzir não gerarem mais o erro
+        - ✅ O comportamento esperado for alcançado
+        - ✅ Todos os testes existentes continuarem passando
+        - ✅ Novos testes forem adicionados para prevenir regressão (se aplicável)
+        
+        ## 🔧 Contexto Técnico
+        
+        **Dicas para o agente de codificação:**
+        - Investigue os logs do sistema para identificar a causa raiz
+        - Verifique as validações nas camadas domain, application e presentation
+        - Se for um problema de validação, verifique as classes em `domain/valueobjects/`
+        - Se for um problema de autenticação, verifique `application/usecases/`
+        - Se for um problema de UI, verifique os arquivos em `src/main/resources/static/`
+        - Adicione testes para reproduzir o bug antes de corrigir
+        - Certifique-se de que a correção não quebra funcionalidades existentes

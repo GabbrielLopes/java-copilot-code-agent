@@ -1,0 +1,161 @@
+name: ✏️ Modificar Atividade Existente
+description: Solicitar alterações em uma atividade extracurricular já existente
+title: "[Modificar Atividade]: "
+labels: ["enhancement", "activity"]
+assignees:
+  - copilot
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 📝 Solicitação de Modificação de Atividade
+        
+        Use este formulário para solicitar alterações em uma atividade existente. Preencha apenas os campos que precisam ser modificados.
+
+  - type: input
+    id: activity-name
+    attributes:
+      label: Nome da Atividade a Modificar
+      description: O nome exato da atividade que deve ser modificada (como aparece no sistema)
+      placeholder: "Ex: Clube de Xadrez"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: change-type
+    attributes:
+      label: Tipo de Modificação
+      description: Selecione o que precisa ser alterado
+      multiple: true
+      options:
+        - Nome da atividade
+        - Descrição
+        - Tipo/Categoria
+        - Horários
+        - Dias da semana
+        - Capacidade máxima
+        - Remover participantes existentes
+    validations:
+      required: true
+
+  - type: input
+    id: new-name
+    attributes:
+      label: Novo Nome (se aplicável)
+      description: Deixe em branco se não for alterar o nome
+      placeholder: "Ex: Clube de Xadrez Avançado"
+    validations:
+      required: false
+
+  - type: textarea
+    id: new-description
+    attributes:
+      label: Nova Descrição (se aplicável)
+      description: Deixe em branco se não for alterar a descrição
+      placeholder: "Ex: Aprenda estratégias avançadas e participe de torneios internacionais"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: new-type
+    attributes:
+      label: Novo Tipo (se aplicável)
+      description: Deixe em branco se não for alterar o tipo
+      options:
+        - Não alterar
+        - Esportes (SPORTS)
+        - Artes (ARTS)
+        - Acadêmico (ACADEMIC)
+        - Comunidade (COMMUNITY)
+        - Tecnologia (TECHNOLOGY)
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: new-days
+    attributes:
+      label: Novos Dias da Semana (se aplicável)
+      description: Marque apenas se for alterar os dias. Selecione todos os dias desejados.
+      options:
+        - label: Segunda-feira (Monday)
+        - label: Terça-feira (Tuesday)
+        - label: Quarta-feira (Wednesday)
+        - label: Quinta-feira (Thursday)
+        - label: Sexta-feira (Friday)
+        - label: Sábado (Saturday)
+        - label: Domingo (Sunday)
+    validations:
+      required: false
+
+  - type: input
+    id: new-start-time
+    attributes:
+      label: Novo Horário de Início (se aplicável)
+      description: Formato 24h (HH:MM). Deixe em branco se não for alterar.
+      placeholder: "Ex: 16:00"
+    validations:
+      required: false
+
+  - type: input
+    id: new-end-time
+    attributes:
+      label: Novo Horário de Término (se aplicável)
+      description: Formato 24h (HH:MM). Deixe em branco se não for alterar.
+      placeholder: "Ex: 18:00"
+    validations:
+      required: false
+
+  - type: input
+    id: new-max-participants
+    attributes:
+      label: Nova Capacidade Máxima (se aplicável)
+      description: Deixe em branco se não for alterar
+      placeholder: "Ex: 25"
+    validations:
+      required: false
+
+  - type: textarea
+    id: reason
+    attributes:
+      label: Motivo da Modificação
+      description: Explique brevemente por que esta alteração é necessária
+      placeholder: "Ex: Os estudantes pediram mais tempo para completar os projetos"
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Informações Adicionais
+      description: Qualquer outra informação relevante
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        
+        ## 📝 Critérios de Aceitação
+        
+        A modificação será considerada implementada quando:
+        - ✅ A atividade especificada for localizada no sistema
+        - ✅ As alterações solicitadas forem aplicadas corretamente
+        - ✅ A atividade modificada aparecer corretamente na listagem
+        - ✅ Os filtros continuarem funcionando com as novas informações
+        - ✅ Os participantes existentes forem preservados (a menos que solicitado remover)
+        - ✅ Os testes continuarem passando
+        
+        ## 🔧 Contexto Técnico
+        
+        **Arquivos que precisarão ser modificados:**
+        - `src/main/java/com/mergingtonhigh/schoolmanagement/infrastructure/migrations/` - Criar nova migração para atualizar a atividade
+        
+        **Dicas para o agente de codificação:**
+        - Crie uma nova migration (ex: V00X_UpdateActivityName.java)
+        - Use `mongoTemplate.updateFirst()` ou `mongoTemplate.findAndModify()`
+        - Mantenha o padrão @ChangeUnit com ordem sequencial
+        - Implemente @RollbackExecution para reverter a mudança
+        - Se alterar o nome (ID da atividade), considere o impacto nos participantes
+        - Valide que a atividade existe antes de modificar
