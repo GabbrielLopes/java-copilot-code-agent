@@ -27,18 +27,24 @@ src/main/java/com/mergingtonhigh/schoolmanagement/
 │   │   ├── ActivityRepository.java
 │   │   └── TeacherRepository.java
 │   └── valueobjects/         # Objetos de valor
+│       ├── ActivityType.java # Tipos de atividade (enum)
 │       ├── Email.java        # Validação de email
 │       └── ScheduleDetails.java # Detalhes de horário
 ├── application/              # 🔧 Camada de Aplicação
 │   ├── dtos/                 # Data Transfer Objects
 │   │   ├── ActivityDTO.java
+│   │   ├── ActivityTypeDTO.java
+│   │   ├── LoginRequestDTO.java
 │   │   ├── StudentRegistrationDTO.java
 │   │   └── TeacherDTO.java
 │   └── usecases/             # Casos de uso
 │       ├── ActivityUseCase.java
+│       ├── AuthenticationUseCase.java
 │       └── StudentRegistrationUseCase.java
 ├── infrastructure/           # 🏭 Camada de Infraestrutura
 │   ├── config/               # Configurações
+│   │   ├── SecurityConfig.java
+│   │   └── WebConfig.java
 │   ├── migrations/           # Migrações do banco
 │   │   └── V001_InitialDatabaseSetup.java
 │   └── persistence/          # Implementações de repositório
@@ -48,7 +54,9 @@ src/main/java/com/mergingtonhigh/schoolmanagement/
 │       └── TeacherRepositoryImpl.java
 └── presentation/             # 🎨 Camada de Apresentação
     ├── controllers/          # Controllers REST
-    │   └── ActivityController.java
+    │   ├── ActivityController.java
+    │   ├── AuthController.java
+    │   └── StaticController.java
     └── mappers/              # Mapeadores DTO ↔ Entity
         ├── ActivityMapper.java
         └── TeacherMapper.java
@@ -91,18 +99,25 @@ src/main/java/com/mergingtonhigh/schoolmanagement/
 - **Listagem de atividades** com filtros por:
   - Dia da semana
   - Horário (manhã, tarde, fim de semana)
-  - Categoria (esportes, artes, acadêmico, etc.)
+  - Categoria (esportes, artes, acadêmico, comunidade, tecnologia)
 - **Detalhes de atividades**:
   - Nome e descrição
   - Horários e dias da semana
   - Capacidade máxima
   - Lista de participantes
+- **Tipos de atividades**:
+  - 🏃 Esportes (Sports)
+  - 🎨 Artes (Arts)
+  - 📚 Acadêmico (Academic)
+  - 🤝 Comunidade (Community)
+  - 💻 Tecnologia (Technology)
 
 ### 👨‍🏫 Sistema de Autenticação
 
-- **Login de professores** com username/senha
+- **Login de professores** com username/senha via query parameters
 - **Controle de acesso** baseado em roles (TEACHER/ADMIN)
-- **Autenticação requerida** para inscrições
+- **Autenticação requerida** para inscrições e cancelamentos
+- **Validação de sessão** via endpoint /auth/check-session
 
 ### 📝 Gestão de Inscrições
 
@@ -172,26 +187,43 @@ Crie um arquivo `.env` baseado no `.env.example`
 
 ### Endpoints Principais
 
+#### Autenticação
+
+```http
+# Login de professor
+POST /auth/login?username={username}&password={password}
+
+# Verificar sessão
+GET /auth/check-session?username={username}
+```
+
 #### Atividades
 
 ```http
+# Listar todas as atividades
 GET /activities
+
+# Listar atividades com filtros
 GET /activities?day=Monday&start_time=15:00&end_time=17:00
+
+# Obter dias disponíveis
 GET /activities/days
 ```
 
 #### Inscrições
 
 ```http
+# Inscrever estudante
 POST /activities/{activityName}/signup
 Content-Type: application/x-www-form-urlencoded
 
-email=student@mergington.edu&teacher_username=teacher1
+email=student@mergington.edu&teacher_username=mrodriguez
 
+# Cancelar inscrição
 POST /activities/{activityName}/unregister
 Content-Type: application/x-www-form-urlencoded
 
-email=student@mergington.edu&teacher_username=teacher1
+email=student@mergington.edu&teacher_username=mrodriguez
 ```
 
 ## 🧪 Testes
@@ -225,22 +257,35 @@ O sistema utiliza **Mongock** para realizar migrações automáticas do banco de
 
 ### Professores Padrão
 
-- **admin** - Administrador principal
-- **teacher.rodriguez** - Professor de artes
-- **teacher.chen** - Professor de xadrez
+- **principal** - Diretor Martinez (Role: ADMIN)
+- **mrodriguez** - Sr. Rodriguez (Role: TEACHER)
+- **mchen** - Sra. Chen (Role: TEACHER)
 
-### Atividades Exemplo
+### Atividades Exemplo (14 atividades seeded)
 
-- **Art Club** - Terças e quintas, 15:30-17:00
-- **Chess Club** - Segundas e quartas, 15:30-17:00
-- **Drama Club** - Quartas e sextas, 16:00-18:00
+1. **Clube de Xadrez** - Segundas e sextas, 15:15-16:45 (Acadêmico)
+2. **Aula de Programação** - Terças e quintas, 07:00-08:00 (Tecnologia)
+3. **Fitness Matinal** - Segundas, quartas e sextas, 06:30-07:45 (Esportes)
+4. **Time de Futebol** - Terças e quintas, 15:30-17:30 (Esportes)
+5. **Time de Basquete** - Quartas e sextas, 15:15-17:00 (Esportes)
+6. **Clube de Arte** - Quintas, 15:15-17:00 (Artes)
+7. **Clube de Teatro** - Segundas e quartas, 15:30-17:30 (Artes)
+8. **Clube de Matemática** - Terças, 07:15-08:00 (Acadêmico)
+9. **Equipe de Debates** - Sextas, 15:30-17:30 (Acadêmico)
+10. **Oficina de Robótica** - Sábados, 10:00-14:00 (Tecnologia)
+11. **Olimpíada de Ciências** - Sábados, 13:00-16:00 (Acadêmico)
+12. **Torneio de Xadrez** - Domingos, 14:00-17:00 (Acadêmico)
+13. **Serviço Comunitário** - Sábados, 09:00-12:00 (Comunidade)
+14. **Manga Maniacs** - Terças, 19:00-20:30 (Artes)
 
 ## 🔒 Segurança
 
-- **Autenticação HTTP Basic** para endpoints administrativos
-- **Criptografia Argon2** para senhas
+- **Autenticação via query parameters** para endpoints de login
+- **Criptografia Argon2** para senhas (via BouncyCastle)
 - **Validação de dados** em todas as camadas
 - **CORS** configurado para desenvolvimento
+- **Controle de acesso** baseado em username do professor autenticado
+- **Variáveis de ambiente** para senhas sensíveis (TEACHER_RODRIGUEZ_PASSWORD, TEACHER_CHEN_PASSWORD, PRINCIPAL_PASSWORD)
 
 ## 📈 Monitoramento
 
