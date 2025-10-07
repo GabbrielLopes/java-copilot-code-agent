@@ -42,6 +42,7 @@ public class ActivityMapper {
                 activity.getMaxParticipants(),
                 activity.getParticipants(),
                 activity.getCurrentParticipantCount(),
-                typeDTO);
+                typeDTO,
+                activity.getDifficultyLevel() != null ? activity.getDifficultyLevel().name().toLowerCase() : null);
     }
 }

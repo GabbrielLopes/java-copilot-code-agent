@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.mergingtonhigh.schoolmanagement.domain.entities.Activity;
 import com.mergingtonhigh.schoolmanagement.domain.entities.Teacher;
 import com.mergingtonhigh.schoolmanagement.domain.valueobjects.ActivityType;
+import com.mergingtonhigh.schoolmanagement.domain.valueobjects.DifficultyLevel;
 import com.mergingtonhigh.schoolmanagement.domain.valueobjects.ScheduleDetails;
 
 import io.mongock.api.annotations.ChangeUnit;
@@ -78,7 +79,8 @@ public class V001_InitialDatabaseSetup {
                                 new ScheduleDetails(List.of("Tuesday", "Thursday"), LocalTime.of(7, 0),
                                                 LocalTime.of(8, 0)),
                                 20,
-                                ActivityType.TECHNOLOGY);
+                                ActivityType.TECHNOLOGY,
+                                DifficultyLevel.BEGINNER);
                 programmingClass.setParticipants(List.of("emma@mergington.edu", "sophia@mergington.edu"));
                 mongoTemplate.save(programmingClass);
 
@@ -148,7 +150,8 @@ public class V001_InitialDatabaseSetup {
                                 "Terças-feiras, 07:15 - 08:00",
                                 new ScheduleDetails(List.of("Tuesday"), LocalTime.of(7, 15), LocalTime.of(8, 0)),
                                 10,
-                                ActivityType.ACADEMIC);
+                                ActivityType.ACADEMIC,
+                                DifficultyLevel.INTERMEDIATE);
                 mathClub.setParticipants(List.of("james@mergington.edu", "benjamin@mergington.edu"));
                 mongoTemplate.save(mathClub);
 
@@ -159,7 +162,8 @@ public class V001_InitialDatabaseSetup {
                                 "Sextas-feiras, 15:30 - 17:30",
                                 new ScheduleDetails(List.of("Friday"), LocalTime.of(15, 30), LocalTime.of(17, 30)),
                                 12,
-                                ActivityType.ACADEMIC);
+                                ActivityType.ACADEMIC,
+                                DifficultyLevel.INTERMEDIATE);
                 debateTeam.setParticipants(List.of("charlotte@mergington.edu", "amelia@mergington.edu"));
                 mongoTemplate.save(debateTeam);
 
@@ -170,7 +174,8 @@ public class V001_InitialDatabaseSetup {
                                 "Sábados, 10:00 - 14:00",
                                 new ScheduleDetails(List.of("Saturday"), LocalTime.of(10, 0), LocalTime.of(14, 0)),
                                 15,
-                                ActivityType.TECHNOLOGY);
+                                ActivityType.TECHNOLOGY,
+                                DifficultyLevel.ADVANCED);
                 roboticsWorkshop.setParticipants(List.of("ethan@mergington.edu", "oliver@mergington.edu"));
                 mongoTemplate.save(roboticsWorkshop);
 
@@ -181,7 +186,8 @@ public class V001_InitialDatabaseSetup {
                                 "Sábados, 13:00 - 16:00",
                                 new ScheduleDetails(List.of("Saturday"), LocalTime.of(13, 0), LocalTime.of(16, 0)),
                                 18,
-                                ActivityType.ACADEMIC);
+                                ActivityType.ACADEMIC,
+                                DifficultyLevel.ADVANCED);
                 scienceOlympiad.setParticipants(List.of("isabella@mergington.edu", "lucas@mergington.edu"));
                 mongoTemplate.save(scienceOlympiad);
 
