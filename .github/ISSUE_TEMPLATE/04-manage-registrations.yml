@@ -1,0 +1,108 @@
+name: 👥 Gerenciar Inscrições de Estudantes
+description: Adicionar ou remover estudantes de atividades existentes
+title: "[Inscrições]: "
+labels: ["enhancement", "registration"]
+assignees:
+  - copilot
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 👥 Gerenciamento de Inscrições
+        
+        Use este formulário para adicionar ou remover estudantes de atividades de forma bulk (em lote).
+
+  - type: input
+    id: activity-name
+    attributes:
+      label: Nome da Atividade
+      description: Nome exato da atividade (como aparece no sistema)
+      placeholder: "Ex: Clube de Xadrez"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: action-type
+    attributes:
+      label: Tipo de Ação
+      description: O que você deseja fazer?
+      options:
+        - Adicionar estudantes
+        - Remover estudantes
+        - Limpar todas as inscrições
+    validations:
+      required: true
+
+  - type: textarea
+    id: student-emails
+    attributes:
+      label: Lista de E-mails dos Estudantes
+      description: Um e-mail por linha. Use apenas para adicionar ou remover estudantes.
+      placeholder: |
+        joao.silva@mergington.edu
+        maria.santos@mergington.edu
+        pedro.oliveira@mergington.edu
+      render: text
+    validations:
+      required: false
+
+  - type: textarea
+    id: reason
+    attributes:
+      label: Motivo da Alteração
+      description: Explique brevemente por que estas alterações são necessárias
+      placeholder: "Ex: Estudantes solicitaram transferência para outra atividade"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: Confirmações
+      description: Confirme que você revisou as informações
+      options:
+        - label: Verifiquei que os e-mails dos estudantes estão corretos
+          required: true
+        - label: Confirmo que tenho autorização para fazer estas alterações
+          required: true
+        - label: Entendo que esta ação afetará as inscrições dos estudantes
+          required: true
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Informações Adicionais
+      description: Qualquer outra informação relevante
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        
+        ## 📝 Critérios de Aceitação
+        
+        A operação será considerada concluída quando:
+        - ✅ Todos os estudantes listados forem adicionados/removidos conforme solicitado
+        - ✅ A contagem de vagas estiver correta
+        - ✅ A lista de participantes estiver atualizada na interface
+        - ✅ Nenhum erro de validação ocorrer (emails inválidos, capacidade excedida)
+        - ✅ As validações de negócio forem respeitadas (capacidade máxima, duplicatas)
+        
+        ## 🔧 Contexto Técnico
+        
+        **Arquivos que podem precisar ser modificados:**
+        - `src/main/java/com/mergingtonhigh/schoolmanagement/infrastructure/migrations/` - Para alterações em lote
+        - `src/main/java/com/mergingtonhigh/schoolmanagement/application/usecases/StudentRegistrationUseCase.java` - Para lógica de inscrição
+        
+        **Dicas para o agente de codificação:**
+        - Para adicionar: Use o método `Activity.addParticipant(Email)` que valida capacidade e duplicatas
+        - Para remover: Use o método `Activity.removeParticipant(Email)` que valida se o estudante está inscrito
+        - Para limpar: Use `Activity.setParticipants(new ArrayList<>())`
+        - Crie uma migração Mongock se for uma operação em lote
+        - Valide todos os e-mails usando a classe `Email` do pacote `domain.valueobjects`
+        - Use `mongoTemplate.updateFirst()` para atualizar a atividade no banco
+        - Implemente rollback para poder reverter a operação se necessário
+        - Considere criar um endpoint REST se esta for uma operação frequente

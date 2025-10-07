@@ -1,0 +1,130 @@
+name: 👨‍🏫 Gerenciar Professores
+description: Adicionar, modificar ou remover professores do sistema
+title: "[Professor]: "
+labels: ["enhancement", "teacher"]
+assignees:
+  - copilot
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 👨‍🏫 Gerenciamento de Professores
+        
+        Use este formulário para gerenciar contas de professores no sistema.
+
+  - type: dropdown
+    id: action-type
+    attributes:
+      label: Tipo de Ação
+      description: O que você deseja fazer?
+      options:
+        - Adicionar novo professor
+        - Modificar professor existente
+        - Remover professor
+        - Redefinir senha de professor
+    validations:
+      required: true
+
+  - type: input
+    id: teacher-username
+    attributes:
+      label: Nome de Usuário do Professor
+      description: Username usado para login (sem espaços, use . ou _ se necessário)
+      placeholder: "Ex: teacher.silva"
+    validations:
+      required: true
+
+  - type: input
+    id: display-name
+    attributes:
+      label: Nome de Exibição
+      description: Nome completo do professor para exibição. Necessário apenas para novo professor.
+      placeholder: "Ex: João Silva"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: role
+    attributes:
+      label: Perfil
+      description: Tipo de acesso do professor
+      options:
+        - Não alterar
+        - Professor (TEACHER)
+        - Administrador (ADMIN)
+    validations:
+      required: false
+
+  - type: input
+    id: new-password
+    attributes:
+      label: Nova Senha (se aplicável)
+      description: Use apenas para novo professor ou redefinição de senha. A senha será encriptada com Argon2.
+      placeholder: "Deixe em branco para gerar senha automática"
+    validations:
+      required: false
+
+  - type: textarea
+    id: reason
+    attributes:
+      label: Motivo da Alteração
+      description: Explique brevemente por que esta alteração é necessária
+      placeholder: "Ex: Novo professor contratado para o departamento de ciências"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: Confirmações
+      description: Confirme as seguintes informações
+      options:
+        - label: Tenho autorização para fazer esta alteração
+          required: true
+        - label: As informações fornecidas estão corretas
+          required: true
+        - label: Entendo que isso afetará o acesso ao sistema (se remover ou alterar)
+          required: false
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Informações Adicionais
+      description: Qualquer outra informação relevante
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        
+        ## 📝 Critérios de Aceitação
+        
+        A operação será considerada concluída quando:
+        - ✅ O professor for adicionado/modificado/removido conforme solicitado
+        - ✅ As credenciais de login funcionarem corretamente (para novo ou senha alterada)
+        - ✅ O perfil (role) estiver configurado corretamente
+        - ✅ A senha estiver encriptada com Argon2 no banco de dados
+        - ✅ O professor aparecer/não aparecer na lista conforme a ação
+        
+        ## 🔧 Contexto Técnico
+        
+        **Arquivos que precisarão ser modificados:**
+        - `src/main/java/com/mergingtonhigh/schoolmanagement/infrastructure/migrations/` - Criar migração para gerenciar professores
+        - `src/main/java/com/mergingtonhigh/schoolmanagement/domain/entities/Teacher.java` - Referência da entidade
+        
+        **Dicas para o agente de codificação:**
+        - Use a classe `Teacher` do pacote `domain.entities`
+        - A enum `Teacher.Role` tem valores: TEACHER e ADMIN
+        - Senhas devem ser encriptadas com Argon2PasswordEncoder (já configurado)
+        - Crie uma nova migration (ex: V00X_AddTeacher.java)
+        - Use `mongoTemplate.save()` para adicionar
+        - Use `mongoTemplate.updateFirst()` para modificar
+        - Use `mongoTemplate.remove()` para remover
+        - Implemente @RollbackExecution para reverter
+        - Para gerar senha automática, use: `UUID.randomUUID().toString().substring(0, 12)`
+        - **IMPORTANTE**: Não commite senhas em texto plano. Use variáveis de ambiente ou geração automática.
+        - Valide que o username não existe antes de adicionar (é chave primária)
+        - Se remover professor, considere impacto em atividades relacionadas

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📚 Documentação do Sistema
+    url: https://github.com/GabbrielLopes/java-copilot-code-agent/blob/main/docs/README.md
+    about: Consulte a documentação completa do sistema
+  - name: 💬 Discussões da Comunidade
+    url: https://github.com/GabbrielLopes/java-copilot-code-agent/discussions
+    about: Participe das discussões da comunidade escolar

@@ -1,0 +1,125 @@
+name: 🎓 Nova Atividade Extracurricular
+description: Solicitar a criação de uma nova atividade extracurricular no sistema
+title: "[Nova Atividade]: "
+labels: ["enhancement", "activity"]
+assignees:
+  - copilot
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 📋 Solicitação de Nova Atividade
+        
+        Obrigado por solicitar uma nova atividade! Preencha os campos abaixo com o máximo de detalhes possível para que possamos criar a atividade corretamente.
+
+  - type: input
+    id: activity-name
+    attributes:
+      label: Nome da Atividade
+      description: O nome que será exibido para os estudantes
+      placeholder: "Ex: Clube de Robótica Avançada"
+    validations:
+      required: true
+
+  - type: textarea
+    id: activity-description
+    attributes:
+      label: Descrição da Atividade
+      description: Uma descrição clara do que os estudantes farão nesta atividade
+      placeholder: "Ex: Aprenda a programar e construir robôs usando Arduino e sensores"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: activity-type
+    attributes:
+      label: Tipo de Atividade
+      description: Selecione a categoria que melhor descreve a atividade
+      options:
+        - Esportes (SPORTS)
+        - Artes (ARTS)
+        - Acadêmico (ACADEMIC)
+        - Comunidade (COMMUNITY)
+        - Tecnologia (TECHNOLOGY)
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: days-of-week
+    attributes:
+      label: Dias da Semana
+      description: Selecione os dias em que a atividade ocorrerá
+      options:
+        - label: Segunda-feira (Monday)
+        - label: Terça-feira (Tuesday)
+        - label: Quarta-feira (Wednesday)
+        - label: Quinta-feira (Thursday)
+        - label: Sexta-feira (Friday)
+        - label: Sábado (Saturday)
+        - label: Domingo (Sunday)
+    validations:
+      required: true
+
+  - type: input
+    id: start-time
+    attributes:
+      label: Horário de Início
+      description: Formato 24h (HH:MM)
+      placeholder: "Ex: 15:30"
+    validations:
+      required: true
+
+  - type: input
+    id: end-time
+    attributes:
+      label: Horário de Término
+      description: Formato 24h (HH:MM)
+      placeholder: "Ex: 17:00"
+    validations:
+      required: true
+
+  - type: input
+    id: max-participants
+    attributes:
+      label: Capacidade Máxima
+      description: Número máximo de estudantes que podem se inscrever
+      placeholder: "Ex: 20"
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Informações Adicionais
+      description: Qualquer outra informação relevante sobre a atividade
+      placeholder: "Ex: Materiais necessários, pré-requisitos, observações especiais"
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        
+        ## 📝 Critérios de Aceitação
+        
+        A atividade será considerada implementada quando:
+        - ✅ A nova atividade estiver visível na listagem do sistema
+        - ✅ Todos os campos estiverem preenchidos corretamente
+        - ✅ Os filtros de dia e horário funcionarem corretamente
+        - ✅ Os estudantes puderem se inscrever na atividade
+        - ✅ A capacidade máxima for respeitada
+        
+        ## 🔧 Contexto Técnico
+        
+        **Arquivos que precisarão ser modificados:**
+        - `src/main/java/com/mergingtonhigh/schoolmanagement/infrastructure/migrations/` - Adicionar migração de banco de dados
+        
+        **Dicas para o agente de codificação:**
+        - Use a classe `Activity` do pacote `domain.entities`
+        - Use a enum `ActivityType` para o tipo da atividade
+        - Use `ScheduleDetails` para os horários
+        - Siga o padrão das atividades existentes em `V001_InitialDatabaseSetup.java`
+        - Crie uma nova migration com ordem sequencial (ex: V002_AddNewActivity.java)
+        - Use o padrão Mongock com @ChangeUnit e @RollbackExecution
